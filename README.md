@@ -34,8 +34,8 @@ for text in texts:
 
 This is highly borrowed from the English [g2p](https://github.com/Kyubyong/g2p).
 
-1. Spells out arabic numbers and some currency symbols, e.g. `Rp 200.000 -> dua ratus ribu rupiah`. This is borrowed from [Cahya's code](https://github.com/cahya-wirawan/text_processor).
-2. Attempts to retrieve the correct pronunciation for heteronyms based on their POS (part-of-speech) tags.
+1. Spells out arabic numbers and some currency symbols, e.g. `Rp 200,000 -> dua ratus ribu rupiah`. This is borrowed from [Cahya's code](https://github.com/cahya-wirawan/text_processor).
+2. Attempts to retrieve the correct pronunciation for heteronyms based on their [POS (part-of-speech) tags](#pos-tagging).
 3. Looks up a lexicon (pronunciation dictionary) for non-homographs. This list is originally from [ipa-dict](https://github.com/open-dict-data/ipa-dict/blob/master/data/ma.txt), and we later made a [modified version](https://huggingface.co/datasets/bookbot/id_word2phoneme).
 4. For OOVs, we predict their pronunciations using our [LSTM model](https://huggingface.co/bookbot/id-g2p-lstm).
 
@@ -43,14 +43,54 @@ This is highly borrowed from the English [g2p](https://github.com/Kyubyong/g2p).
 
 ### Homographs
 
-Indonesian words (as far as we know) only has one case of homograph, that is, differing ways to pronounce the letter `e`. For instance, in the word `apel` (meaning: apple), the letter `e` is a mid central vowel `ə`. On the other hand, the letter `e` in the word `apel` (meaning: going to a significant other's house; courting), is a closed-mid front unrounded vowel `e`. Sometimes, a word might have >1 `e`s pronounced in both ways, for instance, `mereka` (meaning: they) is pronounced as `məreka`. Because of this, there needs a way to disambiguate homographs, and in our case, we used their POS (part-of-speech) tags. However, this is not a foolproof method since homographs may even have the same POS tag. We are considering a contextual model to handle this better.
+Indonesian words (as far as we know) only have one case of homograph, that is, differing ways to pronounce the letter `e`. For instance, in the word `apel` (meaning: apple), the letter `e` is a mid central vowel `ə`. On the other hand, the letter `e` in the word `apel` (meaning: going to a significant other's house; courting), is a closed-mid front unrounded vowel `e`. Sometimes, a word might have >1 `e`s pronounced in both ways, for instance, `mereka` (meaning: they) is pronounced as `məreka`. Because of this, there needs a way to disambiguate homographs, and in our case, we used their POS (part-of-speech) tags. However, this is not a foolproof method since homographs may even have the same POS tag. We are considering a contextual model to handle this better.
+
+### POS Tagging
+
+We trained an [NLTK PerceptronTagger](https://www.nltk.org/_modules/nltk/tag/perceptron.html) on the [POSP](https://huggingface.co/datasets/indonlu) dataset, which achieved 0.956 and 0.945 F1-score on the valid and test sets, respectively. Given its performance and speed, we decided to adopt this model as the POS tagger for the purpose of disambiguating homographs, which is just like the English g2p library.
+
+<details>
+  <summary>Validation Results</summary>
+
+    | tag       | precision | recall   | f1-score |
+    | --------- | --------- | -------- | -------- |
+    | B-$$$     | 1.000000  | 1.000000 | 1.000000 |
+    | B-ADJ     | 0.904132  | 0.864139 | 0.883683 |
+    | B-ADK     | 1.000000  | 0.986667 | 0.993289 |
+    | B-ADV     | 0.966874  | 0.976987 | 0.971904 |
+    | B-ART     | 0.988920  | 0.978082 | 0.983471 |
+    | B-CCN     | 0.997934  | 0.997934 | 0.997934 |
+    | B-CSN     | 0.986395  | 0.963455 | 0.974790 |
+    | B-INT     | 1.000000  | 1.000000 | 1.000000 |
+    | B-KUA     | 0.976744  | 0.976744 | 0.976744 |
+    | B-NEG     | 0.992857  | 0.972028 | 0.982332 |
+    | B-NNO     | 0.919917  | 0.941288 | 0.930480 |
+    | B-NNP     | 0.917685  | 0.914703 | 0.916192 |
+    | B-NUM     | 0.997358  | 0.954488 | 0.975452 |
+    | B-PAR     | 1.000000  | 0.851064 | 0.919540 |
+    | B-PPO     | 0.991206  | 0.991829 | 0.991517 |
+    | B-PRI     | 1.000000  | 0.928571 | 0.962963 |
+    | B-PRK     | 0.793103  | 0.851852 | 0.821429 |
+    | B-PRN     | 0.988327  | 0.988327 | 0.988327 |
+    | B-PRR     | 0.995465  | 1.000000 | 0.997727 |
+    | B-SYM     | 0.999662  | 0.999323 | 0.999492 |
+    | B-UNS     | 0.916667  | 0.733333 | 0.814815 |
+    | B-VBE     | 1.000000  | 0.985714 | 0.992806 |
+    | B-VBI     | 0.929119  | 0.877034 | 0.902326 |
+    | B-VBL     | 1.000000  | 1.000000 | 1.000000 |
+    | B-VBP     | 0.926606  | 0.933457 | 0.930018 |
+    | B-VBT     | 0.939759  | 0.953333 | 0.946498 |
+    | --------- | --------- | -------- | -------- |
+    | macro avg | 0.966490  | 0.946937 | 0.955913 |
+
+</details>
 
 ### Attempts that Failed
 
 - Parsed [online PDF KBBI](https://oldi.lipi.go.id/public/Kamus%20Indonesia.pdf), but it turns out that it has very little phoneme descriptions.
 - Scraped [online Web KBBI](https://github.com/laymonage/kbbi-python), but it had a daily bandwidth which was too low to be used at this level.
 
-For these, we suggest: [this](https://www.youtube.com/shorts/13ViHuJzP3g).
+Therefore, we conclude: [this](https://www.youtube.com/shorts/13ViHuJzP3g).
 
 ### Potential Improvements
 
@@ -59,9 +99,8 @@ There is a ton of room for improvements, both from the technical and the linguis
 - [ ] Use a larger pronunciation lexicon instead of having to guess.
 - [ ] Find a larger homograph list.
 - [ ] Retrain LSTM model with embeddings.
-- [ ] Use GRUs instead of LSTM.
 - [ ] Use contextual model instead of character-level RNNs.
-- [ ] Add test suites.
+- [ ] Add to PyPI.
 
 ## References
 
