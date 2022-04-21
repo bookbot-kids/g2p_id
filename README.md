@@ -39,6 +39,15 @@ This is highly borrowed from the English [g2p](https://github.com/Kyubyong/g2p).
 3. Looks up a lexicon (pronunciation dictionary) for non-homographs. This list is originally from [ipa-dict](https://github.com/open-dict-data/ipa-dict/blob/master/data/ma.txt), and we later made a [modified version](https://huggingface.co/datasets/bookbot/id_word2phoneme).
 4. For OOVs, we predict their pronunciations using our [LSTM model](https://huggingface.co/bookbot/id-g2p-lstm).
 
+## Phoneme and Grapheme Sets
+
+We followed the IPA convention provided in the original [ipa-dict](https://github.com/open-dict-data/ipa-dict/blob/master/data/ma.txt). The list of grapheme and phoneme characters are as the following:
+
+```python
+graphemes = ["'", '-', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z']
+phonemes = ['-', 'a', 'b', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'w', 'z', 'ŋ', 'ə', 'ɲ', 'ʃ', 'ʒ', 'ʔ']
+```
+
 ## Notes
 
 ### Homographs
