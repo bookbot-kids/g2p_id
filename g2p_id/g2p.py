@@ -3,8 +3,14 @@ import re
 from typing import Dict, List, Tuple
 import unicodedata
 from builtins import str as unicode
+import nltk
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import word_tokenize
+
+try:
+    word_tokenize("")
+except LookupError:
+    nltk.download("punkt")
 
 from g2p_id.text_processor import TextProcessor
 from g2p_id.lstm import LSTM
@@ -115,7 +121,7 @@ class G2p:
         Returns
         -------
         List[str]
-            List of strings in phonemes. 
+            List of strings in phonemes.
         """
         text = self.preprocess(text)
         words = word_tokenize(text)
@@ -162,4 +168,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
