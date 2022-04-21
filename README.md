@@ -63,6 +63,7 @@ There is a ton of room for improvements, both from the technical and the linguis
 - [ ] Retrain LSTM model with embeddings.
 - [ ] Use GRUs instead of LSTM.
 - [ ] Use contextual model instead of character-level RNNs.
+- [ ] Use NLTK's Averaged Perceptron Tagger for POS tagging.
 
 ## References
 
