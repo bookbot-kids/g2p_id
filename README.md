@@ -1,6 +1,6 @@
 # g2p ID: Indonesian Grapheme-to-Phoneme Converter
 
-This library is developed to convert Indonesian graphemes (words) to phonemes in IPA. We followed the methods and designs used in the English equivalent library, [g2p](https://github.com/Kyubyong/g2p).
+This library is developed to convert Indonesian (Bahasa Indonesia) graphemes (words) to phonemes in IPA. We followed the methods and designs used in the English equivalent library, [g2p](https://github.com/Kyubyong/g2p).
 
 ## Installation
 
