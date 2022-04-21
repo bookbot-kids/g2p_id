@@ -1,0 +1,10 @@
+{
+	"latent_dim": 256,
+	"bos_token": "\t",
+	"eos_token": "\n",
+	"pad_token": " ",
+	"num_encoder_tokens": 28,
+	"num_decoder_tokens": 32,
+	"max_encoder_seq_length": 24,
+	"max_decoder_seq_length": 25
+}

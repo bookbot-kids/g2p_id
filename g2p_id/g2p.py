@@ -5,7 +5,9 @@ import unicodedata
 from builtins import str as unicode
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import word_tokenize
+
 from text_processor import TextProcessor
+from lstm import LSTM
 
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -40,7 +42,6 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
         Value: Phoneme (IPA)
     """
     lexicon_path = os.path.join(resources_path, "lexicon_id.tsv")
-    print(lexicon_path)
     lexicon2features = dict()
     with open(lexicon_path, encoding="utf-8") as f:
         lines = f.readlines()
@@ -58,6 +59,7 @@ class G2p:
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
         self.tagger.load(tagger_path)
+        self.lstm = LSTM()
         self.pos_dict = {
             "N": ["B-NNO", "B-NNP", "B-PRN", "B-PRN", "B-PRK"],
             "V": ["B-VBI", "B-VBT", "B-VBP", "B-VBL", "B-VBE"],
@@ -138,8 +140,8 @@ class G2p:
                 pron = self.lexicon2features[word]
 
             else:  # predict for OOV
-                # TODO: integrate LSTM
-                pron = word
+                pron = self.lstm.predict(word)
+
             prons.append(pron)
             prons.append(" ")
 
@@ -151,6 +153,7 @@ def main():
         "Ia menyayangi yang lain.",
         "Mereka sedang bermain bola di lapangan.",
         "Hey kamu yang di sana!",
+        "Saya sedang memerah susu sapi.",
     ]
     g2p = G2p()
     for text in texts:
