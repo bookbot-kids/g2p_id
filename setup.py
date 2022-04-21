@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
+import os
 
-
-with open("README.md") as f:
+with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")) as f:
     long_description = f.read()
 
 install_requires = ["numpy", "num2words", "nltk", "onnxruntime"]

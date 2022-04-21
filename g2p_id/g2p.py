@@ -6,8 +6,8 @@ from builtins import str as unicode
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import word_tokenize
 
-from text_processor import TextProcessor
-from lstm import LSTM
+from g2p_id.text_processor import TextProcessor
+from g2p_id.lstm import LSTM
 
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -58,7 +58,7 @@ class G2p:
         self.normalizer = TextProcessor()
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
-        self.tagger.load(tagger_path)
+        self.tagger.load("file://" + tagger_path)
         self.lstm = LSTM()
         self.pos_dict = {
             "N": ["B-NNO", "B-NNP", "B-PRN", "B-PRN", "B-PRK"],

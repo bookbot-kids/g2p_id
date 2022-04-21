@@ -1,0 +1,2 @@
+include g2p_id/resources/*
+include g2p_id/models/*
