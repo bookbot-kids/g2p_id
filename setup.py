@@ -14,7 +14,7 @@ if __name__ == "__main__":
         long_description_content_type="text/markdown",
         author="w11wo",
         author_email="wilson@bookbotkids.com",
-        url="https://github.com/w11wo/g2p_id",
+        url="https://github.com/bookbot-kids/g2p_id",
         license="Apache License",
         packages=find_packages(),
         install_requires=install_requires,

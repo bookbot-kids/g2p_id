@@ -5,7 +5,7 @@ This library is developed to convert Indonesian graphemes (words) to phonemes in
 ## Installation
 
 ```bash
-pip install git+https://github.com/w11wo/g2p_id.git
+pip install git+https://github.com/bookbot-kids/g2p_id.git
 ```
 
 ## How to Use
