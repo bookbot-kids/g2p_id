@@ -106,9 +106,10 @@ Therefore, we conclude: [this](https://www.youtube.com/shorts/13ViHuJzP3g).
 There is a ton of room for improvements, both from the technical and the linguistic side of the approaches. Consider that a failure of one component may cascade to an incorrect conclusion. For instance, an incorrect POS tag can lead to the wrong phoneme, ditto for incorrect LSTM prediction. We propose the following future improvements.
 
 - [ ] Use a larger pronunciation lexicon instead of having to guess.
-- [ ] Find a larger homograph list.
+- [x] Find a larger homograph list.
 - [ ] Retrain LSTM model with embeddings.
 - [ ] Use contextual model instead of character-level RNNs.
+- [ ] Consider hand-written rules for g2p conversion.
 - [ ] Add to PyPI.
 
 ## References
