@@ -7,6 +7,7 @@ import nltk
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import word_tokenize
 
+
 try:
     word_tokenize("")
 except LookupError:
@@ -14,6 +15,7 @@ except LookupError:
 
 from g2p_id.text_processor import TextProcessor
 from g2p_id.lstm import LSTM
+from g2p_id.bert import BERT
 
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -58,14 +60,14 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
 
 
 class G2p:
-    def __init__(self):
+    def __init__(self, model_type="BERT"):
         self.homograph2features = construct_homographs_dictionary()
         self.lexicon2features = construct_lexicon_dictionary()
         self.normalizer = TextProcessor()
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
         self.tagger.load("file://" + tagger_path)
-        self.lstm = LSTM()
+        self.model = BERT() if model_type == "BERT" else LSTM()
         self.pos_dict = {
             "N": ["B-NNO", "B-NNP", "B-PRN", "B-PRN", "B-PRK"],
             "V": ["B-VBI", "B-VBT", "B-VBP", "B-VBL", "B-VBE"],
@@ -73,7 +75,7 @@ class G2p:
             "P": ["B-PAR"],
         }
 
-    def preprocess(self, text: str) -> str:
+    def _preprocess(self, text: str) -> str:
         """Performs preprocessing.
         (1) Adds spaces in between tokens
         (2) Normalizes unicode and accents
@@ -103,6 +105,46 @@ class G2p:
         text = re.sub("[^ a-z'.,?!\-]", "", text)
         return text
 
+    def _rule_based_g2p(self, text: str) -> str:
+        """Applies rule-based Indonesian grapheme2phoneme conversion.
+
+        Parameters
+        ----------
+        text : Grapheme text to convert to phoneme.
+            
+
+        Returns
+        -------
+        str
+            Phoneme string.
+        """
+        _PHONETIC_MAPPING = {
+            "ny": "ɲ",
+            "ng": "ŋ",
+            "c": "tʃ",
+            "'": "ʔ",
+            "aa": "aʔa",
+            "ii": "iʔi",
+            "oo": "oʔo",
+            "əə": "əʔə",
+            "j": "dʒ",
+            "y": "j",
+            "q": "k",
+        }
+
+        _CONSONANTS = "bdfghjklmnprstvwxɲ"
+
+        if text.endswith("k"):
+            text = text[:-1] + "ʔ"
+
+        for g, p in _PHONETIC_MAPPING.items():
+            text = text.replace(g, p)
+
+        for c in _CONSONANTS:
+            text = text.replace(f"k{c}", f"ʔ{c}")
+
+        return text
+
     def __call__(self, text: str) -> List[str]:
         """Grapheme-to-phoneme converter.
         (1) Preprocess and normalize text
@@ -111,7 +153,7 @@ class G2p:
         (4) If word is non-alphabetic, add to list (i.e. punctuation)
         (5) If word is a homograph, check POS and use matching word's phonemes
         (6) If word is a non-homograph, lookup lexicon
-        (7) Otherwise, predict with LSTM
+        (7) Otherwise, predict with a neural network
 
         Parameters
         ----------
@@ -123,7 +165,7 @@ class G2p:
         List[str]
             List of strings in phonemes.
         """
-        text = self.preprocess(text)
+        text = self._preprocess(text)
         words = word_tokenize(text)
         tokens = self.tagger.tag(words)
 
@@ -146,7 +188,9 @@ class G2p:
                 pron = self.lexicon2features[word]
 
             else:  # predict for OOV
-                pron = self.lstm.predict(word)
+                pron = self.model.predict(word)
+                if isinstance(self.model, BERT):
+                    pron = self._rule_based_g2p(pron)
 
             prons.append(pron)
             prons.append(" ")
@@ -159,9 +203,9 @@ def main():
         "Ia menyayangi yang lain.",
         "Mereka sedang bermain bola di lapangan.",
         "Hey kamu yang di sana!",
-        "Saya sedang memerah susu sapi.",
+        "Rahel pergi ke sekolah dan bertemu dengan Budi.",
     ]
-    g2p = G2p()
+    g2p = G2p(model_type="BERT")
     for text in texts:
         print(g2p(text))
 

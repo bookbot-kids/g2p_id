@@ -3,16 +3,16 @@ import json
 import numpy as np
 import onnxruntime as ort
 
-models_path = os.path.join(os.path.dirname(__file__), "models")
+model_path = os.path.join(os.path.dirname(__file__), "models", "lstm")
 
 
 class LSTM:
     def __init__(self):
-        encoder_model_path = os.path.join(models_path, "encoder_model.onnx")
-        decoder_model_path = os.path.join(models_path, "decoder_model.onnx")
-        g2id_path = os.path.join(models_path, "g2id.json")
-        p2id_path = os.path.join(models_path, "p2id.json")
-        config_path = os.path.join(models_path, "config.json")
+        encoder_model_path = os.path.join(model_path, "encoder_model.onnx")
+        decoder_model_path = os.path.join(model_path, "decoder_model.onnx")
+        g2id_path = os.path.join(model_path, "g2id.json")
+        p2id_path = os.path.join(model_path, "p2id.json")
+        config_path = os.path.join(model_path, "config.json")
         self.encoder = ort.InferenceSession(encoder_model_path)
         self.decoder = ort.InferenceSession(decoder_model_path)
         self.g2id = json.load(open(g2id_path, encoding="utf-8"))

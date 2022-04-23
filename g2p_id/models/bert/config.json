@@ -1,0 +1,5 @@
+{
+	"mask_token": "[mask]",
+	"pad_token": "",
+	"max_seq_length": 32
+}
