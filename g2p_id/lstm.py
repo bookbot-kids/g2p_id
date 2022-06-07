@@ -23,15 +23,11 @@ class LSTM:
     def predict(self, text: str) -> str:
         """Performs LSTM inference, predicting phonemes of a given word.
 
-        Parameters
-        ----------
-        text : str
-            Word to convert to phonemes.
+        Args:
+            text (str): Word to convert to phonemes.
 
-        Returns
-        -------
-        str
-            Word in phonemes.
+        Returns:
+            str: Word in phonemes.
         """
         input_seq = np.zeros(
             (

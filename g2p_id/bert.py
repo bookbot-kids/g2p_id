@@ -19,15 +19,11 @@ class BERT:
     def predict(self, text: str) -> str:
         """Performs BERT inference, predicting the correct phoneme for the letter `e`.
 
-        Parameters
-        ----------
-        text : str
-            Word to predict from.
+        Args:
+            text (str): Word to predict from.
 
-        Returns
-        -------
-        str
-            Word after prediction.
+        Returns:
+            str: Word after prediction.
         """
         # mask `e`'s
         text = " ".join([c if c != "e" else "[mask]" for c in text])

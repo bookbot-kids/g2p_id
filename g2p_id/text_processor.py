@@ -101,7 +101,22 @@ class TextProcessor:
         except ValueError:
             return False
 
-    def normalize(self, text):
+    def normalize(self, text: str) -> str:
+        """Normalizes Indonesian text by expanding:
+        
+        - URL
+        - Currency
+        - Measurements
+        - Dates
+        - Timezones
+        - Arabic Numerals
+
+        Args:
+            text (str): Text to normalize.
+
+        Returns:
+            str: Normalized text.
+        """
         found_errors = False
         # Remove URL
         urls = re.findall(self.re_http, text)

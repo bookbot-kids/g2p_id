@@ -23,11 +23,10 @@ resources_path = os.path.join(os.path.dirname(__file__), "resources")
 def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
     """Creates a dictionary of homographs
 
-    Returns
-    -------
-    Dict[str, Tuple[str, str, str, str]]
-        Key: WORD
-        Value: (PH1, PH2, POS1, POS2)
+    Returns:
+        Dict[str, Tuple[str, str, str, str]]: 
+            Key: WORD
+            Value: (PH1, PH2, POS1, POS2)
     """
     homograph_path = os.path.join(resources_path, "homographs_id.tsv")
     homograph2features = dict()
@@ -43,11 +42,10 @@ def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
 def construct_lexicon_dictionary() -> Dict[str, str]:
     """Creates a lexicon dictionary.
 
-    Returns
-    -------
-    Dict[str, str]
-        Key: WORD
-        Value: Phoneme (IPA)
+    Returns:
+        Dict[str, str]:
+            Key: WORD
+            Value: Phoneme (IPA)
     """
     lexicon_path = os.path.join(resources_path, "lexicon_id.tsv")
     lexicon2features = dict()
@@ -61,6 +59,13 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
 
 class G2p:
     def __init__(self, model_type="BERT"):
+        """Constructor for G2p.
+
+        Args:
+            model_type (str, optional): 
+                Type of neural network to use for prediction. 
+                Choices are "LSTM" or "BERT". Defaults to "BERT".
+        """
         self.homograph2features = construct_homographs_dictionary()
         self.lexicon2features = construct_lexicon_dictionary()
         self.normalizer = TextProcessor()
@@ -83,15 +88,11 @@ class G2p:
         (4) Lower case texts
         (5) Removes unwanted tokens
 
-        Parameters
-        ----------
-        text : str
-            Text to preprocess.
+        Arguments:
+            text (str): Text to preprocess.
 
-        Returns
-        -------
-        str
-            Preprocessed text.
+        Returns:
+            str: Preprocessed text.
         """
         text = " ".join(word_tokenize(text))
         text = unicode(text)
@@ -108,15 +109,11 @@ class G2p:
     def _rule_based_g2p(self, text: str) -> str:
         """Applies rule-based Indonesian grapheme2phoneme conversion.
 
-        Parameters
-        ----------
-        text : Grapheme text to convert to phoneme.
-            
+        Args:
+            text (str): Grapheme text to convert to phoneme.
 
-        Returns
-        -------
-        str
-            Phoneme string.
+        Returns:
+            str: Phoneme string.
         """
         _PHONETIC_MAPPING = {
             "ny": "ɲ",
@@ -147,23 +144,20 @@ class G2p:
 
     def __call__(self, text: str) -> List[str]:
         """Grapheme-to-phoneme converter.
-        (1) Preprocess and normalize text
-        (2) Word tokenizes text
-        (3) Predict POS for every word
-        (4) If word is non-alphabetic, add to list (i.e. punctuation)
-        (5) If word is a homograph, check POS and use matching word's phonemes
-        (6) If word is a non-homograph, lookup lexicon
-        (7) Otherwise, predict with a neural network
 
-        Parameters
-        ----------
-        text : str
-            Grapheme text to convert to phoneme.
+        1. Preprocess and normalize text
+        2. Word tokenizes text
+        3. Predict POS for every word
+        4. If word is non-alphabetic, add to list (i.e. punctuation)
+        5. If word is a homograph, check POS and use matching word's phonemes
+        6. If word is a non-homograph, lookup lexicon
+        7. Otherwise, predict with a neural network
 
-        Returns
-        -------
-        List[str]
-            List of strings in phonemes.
+        Args:
+            text (str): Grapheme text to convert to phoneme.
+
+        Returns:
+            List[str]: List of strings in phonemes.
         """
         text = self._preprocess(text)
         words = word_tokenize(text)
