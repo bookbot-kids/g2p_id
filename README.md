@@ -105,8 +105,6 @@ We trained an [NLTK PerceptronTagger](https://www.nltk.org/_modules/nltk/tag/per
 - Parsed [online PDF KBBI](https://oldi.lipi.go.id/public/Kamus%20Indonesia.pdf), but it turns out that it has very little phoneme descriptions.
 - Scraped [online Web KBBI](https://github.com/laymonage/kbbi-python), but it had a daily bandwidth which was too low to be used at this level.
 
-Therefore, we conclude: [this](https://www.youtube.com/shorts/13ViHuJzP3g).
-
 ### Potential Improvements
 
 There is a ton of room for improvements, both from the technical and the linguistic side of the approaches. Consider that a failure of one component may cascade to an incorrect conclusion. For instance, an incorrect POS tag can lead to the wrong phoneme, ditto for incorrect BERT/LSTM prediction. We propose the following future improvements.
