@@ -42,6 +42,8 @@ class BERT:
         Returns:
             str: Word after prediction.
         """
+        # `x` is currently OOV, we replace with
+        text = text.replace("x", "ks")
         # mask `e`'s
         text = " ".join([c if c != "e" else "[mask]" for c in text])
 

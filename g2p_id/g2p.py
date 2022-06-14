@@ -143,9 +143,10 @@ class G2p:
             "j": "dʒ",
             "y": "j",
             "q": "k",
+            "x": "ks"
         }
 
-        _CONSONANTS = "bdfghjklmnprstvwxɲ"
+        _CONSONANTS = "bdfghjklmnprstvwɲ"
 
         if text.endswith("k"):
             text = text[:-1] + "ʔ"
