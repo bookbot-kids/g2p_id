@@ -4,7 +4,7 @@ import os
 with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")) as f:
     long_description = f.read()
 
-install_requires = ["scipy", "num2words", "nltk", "onnxruntime"]
+install_requires = ["num2words", "nltk", "onnxruntime", "numpy==1.21.6"]
 
 if __name__ == "__main__":
     setup(
