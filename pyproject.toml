@@ -1,0 +1,19 @@
+[project]
+name = "g2p_id"
+version = "0.0.1"
+authors = [
+  { name="w11wo", email="wilson@bookbotkids.com" },
+]
+description = "Indonesian G2P."
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/bookbot-kids/g2p_id"
+"Bug Tracker" = "https://github.com/bookbot-kids/g2p_id/issues"
+"Documentation" = "https://bookbot-kids.github.io/g2p_id/"
