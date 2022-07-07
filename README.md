@@ -5,7 +5,7 @@ This library is developed to convert Indonesian (Bahasa Indonesia) graphemes (wo
 ## Installation
 
 ```bash
-pip install git+https://github.com/bookbot-kids/g2p_id.git
+pip install g2p_id_py
 ```
 
 ## How to Use
@@ -113,7 +113,7 @@ There is a ton of room for improvements, both from the technical and the linguis
 - [x] Find a larger homograph list.
 - [x] Use contextual model instead of character-level RNNs.
 - [x] Consider hand-written rules for g2p conversion.
-- [ ] Add to PyPI.
+- [x] Add to PyPI.
 
 ## References
 
