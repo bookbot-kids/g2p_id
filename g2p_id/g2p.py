@@ -40,7 +40,7 @@ def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
     """Creates a dictionary of homographs
 
     Returns:
-        Dict[str, Tuple[str, str, str, str]]: 
+        Dict[str, Tuple[str, str, str, str]]:
             Key: WORD
             Value: (PH1, PH2, POS1, POS2)
     """
@@ -78,8 +78,8 @@ class G2p:
         """Constructor for G2p.
 
         Args:
-            model_type (str, optional): 
-                Type of neural network to use for prediction. 
+            model_type (str, optional):
+                Type of neural network to use for prediction.
                 Choices are "LSTM" or "BERT". Defaults to "BERT".
         """
         self.homograph2features = construct_homographs_dictionary()
@@ -132,24 +132,30 @@ class G2p:
             str: Phoneme string.
         """
         _PHONETIC_MAPPING = {
+            "kh": "x",
             "ny": "ɲ",
             "ng": "ŋ",
+            "sy": "ʃ",
             "c": "tʃ",
+            "g": "ɡ",
+            "j": "dʒ",
+            "q": "k",
+            "x": "ks",
+            "y": "j",
             "'": "ʔ",
             "aa": "aʔa",
             "ii": "iʔi",
             "oo": "oʔo",
             "əə": "əʔə",
-            "j": "dʒ",
-            "y": "j",
-            "q": "k",
-            "x": "ks"
         }
 
-        _CONSONANTS = "bdfghjklmnprstvwɲ"
+        _CONSONANTS = "bdjklmnprstwɲ"
 
         if text.endswith("k"):
             text = text[:-1] + "ʔ"
+
+        if text.startswith("x"):
+            text = "s" + text[1:]
 
         for g, p in _PHONETIC_MAPPING.items():
             text = text.replace(g, p)
@@ -157,7 +163,11 @@ class G2p:
         for c in _CONSONANTS:
             text = text.replace(f"k{c}", f"ʔ{c}")
 
-        return text
+        phonemes = [
+            list(phn) if phn != "dʒ" and phn != "tʃ" else [phn]
+            for phn in re.split("(tʃ|dʒ)", text)
+        ]
+        return " ".join([p for phn in phonemes for p in phn])
 
     def __call__(self, text: str) -> List[str]:
         """Grapheme-to-phoneme converter.
@@ -203,18 +213,16 @@ class G2p:
                 if isinstance(self.model, BERT):
                     pron = self._rule_based_g2p(pron)
 
-            prons.append(pron)
-            prons.append(" ")
+            prons.append(pron.split())
 
-        return prons[:-1]
+        return prons
 
 
 def main():
     texts = [
-        "Ia menyayangi yang lain.",
+        "Apel itu berwarna merah.",
+        "Rahel bersekolah di Jakarta.",
         "Mereka sedang bermain bola di lapangan.",
-        "Hey kamu yang di sana!",
-        "Rahel pergi ke sekolah dan bertemu dengan Budi.",
     ]
     g2p = G2p(model_type="BERT")
     for text in texts:

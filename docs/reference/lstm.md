@@ -10,3 +10,10 @@ lstm = LSTM()
 for text in texts:
     print(lstm.predict(text))
 ```
+
+```py
+>> məŋəmbaŋkanɲa
+>> mərdeka
+>> pətʃəl
+>> lele
+```

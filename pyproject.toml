@@ -1,6 +1,6 @@
 [project]
 name = "g2p_id_py"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="w11wo", email="wilson@bookbotkids.com" },
 ]

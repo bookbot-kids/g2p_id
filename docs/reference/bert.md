@@ -10,3 +10,10 @@ bert = BERT()
 for text in texts:
     print(bert.predict(text))
 ```
+
+```py
+>> məngəmbangkannya
+>> mərdeka
+>> pəcel
+>> lele
+```
