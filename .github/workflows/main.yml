@@ -15,6 +15,8 @@ jobs:
         with:
           python-version: 3.x
       - name: Install dependencies
-        run: pip install mkdocs-material mkdocstrings mkdocstrings-python-legacy
+        run: pip install mkdocs-material mkdocstrings mkdocstrings-python-legacy num2words nltk onnxruntime
+      - name: Install package
+        run: pip install .
       - name: Deploy docs
         run: mkdocs gh-deploy --force
