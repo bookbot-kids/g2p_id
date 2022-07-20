@@ -110,6 +110,7 @@ class G2p:
         Returns:
             str: Preprocessed text.
         """
+        text = text.replace("-", " ")
         text = " ".join(word_tokenize(text))
         text = unicode(text)
         text = "".join(
@@ -147,6 +148,7 @@ class G2p:
             "ii": "iʔi",
             "oo": "oʔo",
             "əə": "əʔə",
+            "uu": "uʔu",
         }
 
         _CONSONANTS = "bdjklmnprstwɲ"

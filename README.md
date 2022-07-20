@@ -15,7 +15,7 @@ from g2p_id import G2p
 
 texts = [
     "Apel itu berwarna merah.",
-    "Rahel bersekolah di Jakarta.",
+    "Rahel bersekolah di S M A Jakarta 17.",
     "Mereka sedang bermain bola di lapangan.",
 ]
 
@@ -24,7 +24,7 @@ for text in texts:
     print(g2p(text))
 
 >> [['a', 'p', 'ə', 'l'], ['i', 't', 'u'], ['b', 'ə', 'r', 'w', 'a', 'r', 'n', 'a'], ['m', 'e', 'r', 'a', 'h'], ['.']]
->> [['r', 'a', 'h', 'e', 'l'], ['b', 'ə', 'r', 's', 'ə', 'k', 'o', 'l', 'a', 'h'], ['d', 'i'], ['dʒ', 'a', 'k', 'a', 'r', 't', 'a'], ['.']]
+>> [['r', 'a', 'h', 'e', 'l'], ['b', 'ə', 'r', 's', 'ə', 'k', 'o', 'l', 'a', 'h'], ['d', 'i'], ['e', 's'], ['e', 'm'], ['a'], ['dʒ', 'a', 'k', 'a', 'r', 't', 'a'], ['t', 'u', 'dʒ', 'u', 'h'], ['b', 'ə', 'l', 'a', 's'], ['.']]
 >> [['m', 'ə', 'r', 'e', 'k', 'a'], ['s', 'ə', 'd', 'a', 'ŋ'], ['b', 'ə', 'r', 'm', 'a', 'i', 'n'], ['b', 'o', 'l', 'a'], ['d', 'i'], ['l', 'a', 'p', 'a', 'ŋ', 'a', 'n'], ['.']]
 ```
 
