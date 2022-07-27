@@ -1,5 +1,20 @@
 # g2p ID: Indonesian Grapheme-to-Phoneme Converter
 
+<p align="center">
+    <a href="https://github.com/bookbot-kids/g2p_id/blob/main/LICENSE.md">
+        <img alt="GitHub" src="https://img.shields.io/github/license/bookbot-kids/g2p_id.svg?color=blue">
+    </a>
+    <a href="https://bookbot-kids.github.io/g2p_id/">
+        <img alt="Documentation" src="https://img.shields.io/website/http/bookbot-kids.github.io/g2p_id.svg?down_color=red&down_message=offline&up_message=online">
+    </a>
+    <a href="https://github.com/bookbot-kids/g2p_id/releases">
+        <img alt="GitHub release" src="https://img.shields.io/github/release/bookbot-kids/g2p_id.svg">
+    </a>
+    <a href="https://github.com/bookbot-kids/g2p_id/blob/main/CODE_OF_CONDUCT.md">
+        <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg">
+    </a>
+</p>
+
 This library is developed to convert Indonesian (Bahasa Indonesia) graphemes (words) to phonemes in IPA. We followed the methods and designs used in the English equivalent library, [g2p](https://github.com/Kyubyong/g2p).
 
 ## Installation
