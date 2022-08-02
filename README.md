@@ -13,10 +13,12 @@
     <a href="https://github.com/bookbot-kids/g2p_id/blob/main/CODE_OF_CONDUCT.md">
         <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg">
     </a>
-    <a href="https://github.com/bookbot-kids/g2p_id/blob/main/CODE_OF_CONDUCT.md">
-        <img alt="Contributor Covenant" src="https://github.com/anantoj/g2p_id/actions/workflows/tests.yml/badge.svg">
+    <a href="https://github.com/bookbot-kids/g2p_id/actions/workflows/tests.yml">
+        <img alt="Tests" src="https://github.com/bookbot-kids/g2p_id/actions/workflows/tests.yml/badge.svg">
     </a>
-
+    <a href="https://discord.gg/gqwTPyPxa6">
+        <img alt="chat on Discord" src="https://img.shields.io/discord/1001447685645148169?logo=discord">
+    </a>
 </p>
 
 This library is developed to convert Indonesian (Bahasa Indonesia) graphemes (words) to phonemes in IPA. We followed the methods and designs used in the English equivalent library, [g2p](https://github.com/Kyubyong/g2p).
