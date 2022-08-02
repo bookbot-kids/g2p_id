@@ -24,6 +24,7 @@ SOFTWARE.
 
 
 import re
+from typing import Any
 from num2words import num2words
 import os
 
@@ -53,20 +54,20 @@ class TextProcessor:
         self.timezones_path = os.path.join(resources_path, "timezones.tsv")
 
         with open(self.measurements_path, "r") as file:
-            for line in file:
-                line = line.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.measurements[line[0]] = line[1]
 
         self.currencies = {}
         with open(self.currencies_path, "r") as file:
-            for line in file:
-                line = line.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.currencies[line[0]] = line[1]
 
         self.timezones = {}
         with open(self.timezones_path, "r") as file:
-            for line in file:
-                line = line.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.timezones[line[0]] = line[1]
 
         self.re_thousands = "|".join([t for t in self.thousands])
@@ -87,7 +88,8 @@ class TextProcessor:
             r"""
             (https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.
             [a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)
-            """, re.X
+            """,
+            re.X,
         )
 
     @staticmethod
@@ -131,7 +133,7 @@ class TextProcessor:
         # Currency
         moneys = re.findall(self.re_moneys, text)
         for money in moneys:
-            number = re.sub(",", ".", re.sub(r"\.", "", money[2].strip(" ,.")))
+            number: Any = re.sub(",", ".", re.sub(r"\.", "", money[2].strip(" ,.")))
             try:
                 if number == "":
                     continue
@@ -177,7 +179,7 @@ class TextProcessor:
         for date in dates:
             try:
                 day = num2words(int(date[1]), to="cardinal", lang="id")
-                month = int(date[2]) - 1
+                month: Any = int(date[2]) - 1
                 if month >= 12:
                     month = 0
                 month = self.months[month]
