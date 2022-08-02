@@ -24,7 +24,7 @@ SOFTWARE.
 
 
 import re
-from typing import Any, Union
+from typing import Any
 from num2words import num2words
 import os
 
@@ -54,20 +54,20 @@ class TextProcessor:
         self.timezones_path = os.path.join(resources_path, "timezones.tsv")
 
         with open(self.measurements_path, "r") as file:
-            for l in file:
-                line = l.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.measurements[line[0]] = line[1]
 
         self.currencies = {}
         with open(self.currencies_path, "r") as file:
-            for l in file:
-                line = l.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.currencies[line[0]] = line[1]
 
         self.timezones = {}
         with open(self.timezones_path, "r") as file:
-            for l in file:
-                line = l.strip().split("\t")
+            for lines in file:
+                line = lines.strip().split("\t")
                 self.timezones[line[0]] = line[1]
 
         self.re_thousands = "|".join([t for t in self.thousands])
