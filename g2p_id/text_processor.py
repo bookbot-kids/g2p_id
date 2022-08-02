@@ -83,7 +83,12 @@ class TextProcessor:
         self.re_timezones = r"((\d{1,2})[\.:](\d{1,2}) " + r"\b({})\b)".format(
             self.re_timezones
         )
-        self.re_http = r"(https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+        self.re_http = re.compile(
+            r"""
+            (https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.
+            [a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+            """, re.X
+        )
 
     @staticmethod
     def is_integer(number):
