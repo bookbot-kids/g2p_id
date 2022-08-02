@@ -103,7 +103,7 @@ class TextProcessor:
 
     def normalize(self, text: str) -> str:
         """Normalizes Indonesian text by expanding:
-        
+
         - URL
         - Currency
         - Measurements

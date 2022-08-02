@@ -120,7 +120,7 @@ class G2p:
         )
         text = self.normalizer.normalize(text).strip()
         text = text.lower()
-        text = re.sub("[^ a-z'.,?!\-]", "", text)
+        text = re.sub(r"[^ a-z'.,?!\-]", "", text)
         return text
 
     def _rule_based_g2p(self, text: str) -> str:
