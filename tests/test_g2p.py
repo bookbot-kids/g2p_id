@@ -1,4 +1,4 @@
-def test_g2p_id(g2p):
+def test_g2p(g2p):
     assert g2p("Apel itu berwarna merah.") == [
         ["a", "p", "ə", "l"],
         ["i", "t", "u"],
@@ -27,3 +27,17 @@ def test_g2p_id(g2p):
         ["l", "a", "p", "a", "ŋ", "a", "n"],
         ["."],
     ]
+
+
+def test_lstm(lstm):
+    assert lstm.predict("mengembangkannya") == "məŋəmbaŋkanɲa"
+    assert lstm.predict("merdeka") == "mərdeka"
+    assert lstm.predict("pecel") == "pətʃəl"
+    assert lstm.predict("lele") == "lele"
+
+
+def test_bert(bert):
+    assert bert.predict("mengembangkannya") == "məngəmbangkannya"
+    assert bert.predict("merdeka") == "mərdeka"
+    assert bert.predict("pecel") == "pəcel"
+    assert bert.predict("lele") == "lele"
