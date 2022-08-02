@@ -16,7 +16,7 @@ limitations under the License.
 
 import os
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import unicodedata
 from builtins import str as unicode
 import nltk
@@ -88,7 +88,7 @@ class G2p:
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
         self.tagger.load("file://" + tagger_path)
-        self.model = BERT() if model_type == "BERT" else LSTM()
+        self.model: Union[BERT, LSTM] = BERT() if model_type == "BERT" else LSTM()
         self.pos_dict = {
             "N": ["B-NNO", "B-NNP", "B-PRN", "B-PRN", "B-PRK"],
             "V": ["B-VBI", "B-VBT", "B-VBP", "B-VBL", "B-VBE"],
@@ -171,7 +171,7 @@ class G2p:
         ]
         return " ".join([p for phn in phonemes for p in phn])
 
-    def __call__(self, text: str) -> List[str]:
+    def __call__(self, text: str) -> List[List[str]]:
         """Grapheme-to-phoneme converter.
 
         1. Preprocess and normalize text
@@ -186,7 +186,7 @@ class G2p:
             text (str): Grapheme text to convert to phoneme.
 
         Returns:
-            List[str]: List of strings in phonemes.
+            List[List[str]]: List of strings in phonemes.
         """
         text = self._preprocess(text)
         words = word_tokenize(text)
