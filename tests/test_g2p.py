@@ -43,5 +43,5 @@ def test_bert(bert):
 
 def test_ps(g2p):
     assert g2p("psikologi") == [['s', 'i', 'k', 'o', 'l', 'o', 'ɡ', 'i']]
-    assert g2p("pseudokata") == [['s', 'e', 'u', 'd', 'o', 'k', 'a', 't', 'a']]
-    assert g2p("psike") == [['s', 'i', 'k', 'e']]
+    assert g2p("psikometri") == [['s', 'i', 'k', 'o', 'm', 'e', 't', 'r', 'i']]
+    assert g2p("psikotes") == [['s', 'i', 'k', 'o', 't', 'e', 's']]
