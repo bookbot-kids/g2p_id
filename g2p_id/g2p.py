@@ -159,6 +159,9 @@ class G2p:
         if text.startswith("x"):
             text = "s" + text[1:]
 
+        if text.startswith("ps"):
+            text = text[1:]
+
         for g, p in _PHONETIC_MAPPING.items():
             text = text.replace(g, p)
 
@@ -225,6 +228,7 @@ def main():
         "Apel itu berwarna merah.",
         "Rahel bersekolah di Jakarta.",
         "Mereka sedang bermain bola di lapangan.",
+        "Psikologi"
     ]
     g2p = G2p(model_type="BERT")
     for text in texts:

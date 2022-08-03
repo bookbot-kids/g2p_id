@@ -28,7 +28,6 @@ def test_g2p(g2p):
         ["."],
     ]
 
-
 def test_lstm(lstm):
     assert lstm.predict("mengembangkannya") == "məŋəmbaŋkanɲa"
     assert lstm.predict("merdeka") == "mərdeka"
@@ -41,3 +40,8 @@ def test_bert(bert):
     assert bert.predict("merdeka") == "mərdeka"
     assert bert.predict("pecel") == "pəcel"
     assert bert.predict("lele") == "lele"
+
+def test_ps(g2p):
+    assert g2p("psikologi") == [['s', 'i', 'k', 'o', 'l', 'o', 'ɡ', 'i']]
+    assert g2p("pseudokata") == [['s', 'e', 'u', 'd', 'o', 'k', 'a', 't', 'a']]
+    assert g2p("psike") == [['s', 'i', 'k', 'e']]
