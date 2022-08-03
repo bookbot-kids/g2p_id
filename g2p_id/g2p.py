@@ -228,7 +228,7 @@ def main():
         "Apel itu berwarna merah.",
         "Rahel bersekolah di Jakarta.",
         "Mereka sedang bermain bola di lapangan.",
-        "Psikologi"
+        "Psikologi",
     ]
     g2p = G2p(model_type="BERT")
     for text in texts:
