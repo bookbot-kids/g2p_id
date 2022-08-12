@@ -133,14 +133,6 @@ class G2p:
             str: Phoneme string.
         """
         _PHONETIC_MAPPING = {
-            "'": "ʔ",
-            "g": "ɡ",
-            "q": "k",
-            "j": "dʒ",
-            "y": "j",
-            "x": "ks",
-            "c": "tʃ",
-            "kh": "x",
             "ny": "ɲ",
             "ng": "ŋ",
             "sy": "ʃ",
@@ -149,6 +141,14 @@ class G2p:
             "oo": "oʔo",
             "əə": "əʔə",
             "uu": "uʔu",
+            "'": "ʔ",
+            "g": "ɡ",
+            "q": "k",
+            "j": "dʒ",
+            "y": "j",
+            "x": "ks",
+            "c": "tʃ",
+            "kh": "x",
         }
 
         _CONSONANTS = "bdjklmnprstwɲ"

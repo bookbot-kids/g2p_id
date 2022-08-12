@@ -27,6 +27,22 @@ def test_g2p(g2p):
         ["l", "a", "p", "a", "ŋ", "a", "n"],
         ["."],
     ]
+    assert g2p("Ini rumahnya Aisyah dan Ceri.") == [
+        ["i", "n", "i"],
+        ["r", "u", "m", "a", "h", "ɲ", "a"],
+        ["a", "i", "ʃ", "a", "h"],
+        ["d", "a", "n"],
+        ["tʃ", "e", "r", "i"],
+        ["."],
+    ]
+
+
+def test_rule_based_g2p(g2p):
+    assert g2p._rule_based_g2p("berakhirnya") == "b e r a x i r ɲ a"
+    assert g2p._rule_based_g2p("bermaaf-maafan") == "b e r m a ʔ a f - m a ʔ a f a n"
+    assert g2p._rule_based_g2p("kecolongan") == "k e tʃ o l o ŋ a n"
+    assert g2p._rule_based_g2p("jayapura") == "dʒ a j a p u r a"
+    assert g2p._rule_based_g2p("xenon") == "s e n o n"
 
 
 def test_lstm(lstm):
