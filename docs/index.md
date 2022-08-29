@@ -18,6 +18,9 @@
     <a href="https://github.com/bookbot-kids/g2p_id/actions/workflows/tests.yml">
         <img alt="Tests" src="https://github.com/bookbot-kids/g2p_id/actions/workflows/tests.yml/badge.svg">
     </a>
+    <a href="https://codecov.io/gh/bookbot-kids/g2p_id">
+        <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/bookbot-kids/g2p_id">
+    </a>
     <a href="https://discord.gg/gqwTPyPxa6">
         <img alt="chat on Discord" src="https://img.shields.io/discord/1001447685645148169?logo=discord">
     </a>
