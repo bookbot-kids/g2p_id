@@ -72,14 +72,3 @@ class BERT:
             tokens[idx] = predicted_ids[i]
 
         return "".join([self.id2token[t] for t in tokens if t != 0])
-
-
-def main():
-    texts = ["mengembangkannya", "merdeka", "pecel", "lele"]
-    bert = BERT()
-    for text in texts:
-        print(bert.predict(text))
-
-
-if __name__ == "__main__":
-    main()

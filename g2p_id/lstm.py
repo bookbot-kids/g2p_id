@@ -94,14 +94,3 @@ class LSTM:
             states_value = [h, c]
 
         return decoded_sentence.replace(self.config["eos_token"], "")
-
-
-def main():
-    texts = ["mengembangkannya", "merdeka", "pecel", "lele"]
-    lstm = LSTM()
-    for text in texts:
-        print(lstm.predict(text))
-
-
-if __name__ == "__main__":
-    main()

@@ -221,18 +221,3 @@ class G2p:
             prons.append(pron.split())
 
         return prons
-
-
-def main():
-    texts = [
-        "Apel itu berwarna merah.",
-        "Rahel bersekolah di Jakarta.",
-        "Mereka sedang bermain bola di lapangan.",
-    ]
-    g2p = G2p(model_type="BERT")
-    for text in texts:
-        print(g2p(text))
-
-
-if __name__ == "__main__":
-    main()
