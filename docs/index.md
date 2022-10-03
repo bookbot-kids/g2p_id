@@ -24,6 +24,9 @@
     <a href="https://discord.gg/gqwTPyPxa6">
         <img alt="chat on Discord" src="https://img.shields.io/discord/1001447685645148169?logo=discord">
     </a>
+    <a href="https://github.com/bookbot-kids/g2p_id/blob/main/CONTRIBUTING.md">
+        <img alt="contributing guidelines" src="https://img.shields.io/badge/contributing-guidelines-brightgreen">
+    </a>
 </p>
 
 This library is developed to convert Indonesian (Bahasa Indonesia) graphemes (words) to phonemes in IPA. We followed the methods and designs used in the English equivalent library, [g2p](https://github.com/Kyubyong/g2p).
