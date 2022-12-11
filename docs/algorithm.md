@@ -22,7 +22,7 @@ Indonesian words (as far as we know) only have one case of homograph, that is, d
 
 Initially, we relied on a sequence2sequence LSTM model for OOV (out-of-vocabulary) prediction. This was a natural choice given that it can "automatically" learn the rules of grapheme-to-phoneme conversion without having to determine the rules by hand. However, we soon noticed that despite its validation results, the model performed poorly on unseen words, especially on longer ones. We needed a more controllable model that makes predictions on necessary characters only. We ended up with a customized BERT that predicts the correct pronunciation of the letter `e` while keeping the rest of the string unchanged. We then apply a hand-written g2p conversion algorithm that handles the other characters.
 
-You can find more detail in [this blog post](https://w11wo.github.io/posts/2022/04/predicting-phonemes-with-bert/).
+You can find more detail in [this blog post](https://wilsonwongso.dev/posts/2022/04/predicting-phonemes-with-bert/).
 
 ## POS Tagging
 

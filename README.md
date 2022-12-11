@@ -101,6 +101,6 @@ You can find more details on how we handled homographs and out-of-vocabulary pre
 
 ## Contributors
 
-<a href="https://github.com/w11wo/g2p_id/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=w11wo/g2p_id" />
+<a href="https://github.com/bookbot-kids/g2p_id/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bookbot-kids/g2p_id" />
 </a>
