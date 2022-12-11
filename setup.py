@@ -20,5 +20,5 @@ if __name__ == "__main__":
         install_requires=install_requires,
         include_package_data=True,
         platforms=["linux", "unix", "windows"],
-        python_requires=">=3.6",
+        python_requires=">=3.7",
     )
