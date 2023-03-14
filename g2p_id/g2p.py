@@ -19,15 +19,8 @@ import re
 from typing import Dict, List, Tuple, Union
 import unicodedata
 from builtins import str as unicode
-import nltk
 from nltk.tag.perceptron import PerceptronTagger
-from nltk.tokenize import word_tokenize
-
-
-try:
-    word_tokenize("")
-except LookupError:
-    nltk.download("punkt")
+from nltk.tokenize import TweetTokenizer
 
 from g2p_id.text_processor import TextProcessor
 from g2p_id.lstm import LSTM
@@ -89,6 +82,7 @@ class G2p:
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
         self.tagger.load("file://" + tagger_path)
         self.model: Union[BERT, LSTM] = BERT() if model_type == "BERT" else LSTM()
+        self.tokenizer = TweetTokenizer()
         self.pos_dict = {
             "N": ["B-NNO", "B-NNP", "B-PRN", "B-PRN", "B-PRK"],
             "V": ["B-VBI", "B-VBT", "B-VBP", "B-VBL", "B-VBE"],
@@ -111,7 +105,7 @@ class G2p:
             str: Preprocessed text.
         """
         text = text.replace("-", " ")
-        text = " ".join(word_tokenize(text))
+        text = " ".join(self.tokenizer.tokenize(text))
         text = unicode(text)
         text = "".join(
             char
@@ -192,7 +186,7 @@ class G2p:
             List[List[str]]: List of strings in phonemes.
         """
         text = self._preprocess(text)
-        words = word_tokenize(text)
+        words = self.tokenizer.tokenize(text)
         tokens = self.tagger.tag(words)
 
         prons = []
