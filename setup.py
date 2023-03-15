@@ -1,10 +1,15 @@
 from setuptools import find_packages, setup
-import os
+from pathlib import Path
 
-with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")) as f:
-    long_description = f.read()
+this_path = Path(__file__).parent
 
-install_requires = ["num2words", "nltk", "onnxruntime"]
+readme_path = this_path / "README.md"
+requirements_path = this_path / "requirements.txt"
+
+long_description = readme_path.read_text(encoding="utf-8")
+
+with open(requirements_path, "r", encoding="utf-8") as requirements_file:
+    requirements = requirements_file.read().splitlines()
 
 if __name__ == "__main__":
     setup(
@@ -17,7 +22,7 @@ if __name__ == "__main__":
         url="https://github.com/bookbot-kids/g2p_id",
         license="Apache License",
         packages=find_packages(),
-        install_requires=install_requires,
+        install_requires=requirements,
         include_package_data=True,
         platforms=["linux", "unix", "windows"],
         python_requires=">=3.7",

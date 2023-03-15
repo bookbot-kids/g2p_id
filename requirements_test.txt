@@ -1,6 +1,6 @@
 importlib_metadata<5
-flake8==3.9.2
-tox==3.24.3
-pytest==6.2.5
-pytest-cov==2.12.1
-mypy===0.910
+flake8
+tox
+pytest
+pytest-cov
+mypy
