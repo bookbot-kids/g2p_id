@@ -28,7 +28,9 @@ class BERT:
         bert_model_path = os.path.join(model_path, "bert_mlm.onnx")
         token2id = os.path.join(model_path, "token2id.json")
         config_path = os.path.join(model_path, "config.json")
-        self.model = ort.InferenceSession(bert_model_path)
+        self.model = ort.InferenceSession(
+            bert_model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
+        )
         self.token2id = json.load(open(token2id, encoding="utf-8"))
         self.id2token = {v: k for k, v in self.token2id.items()}
         self.config = json.load(open(config_path, encoding="utf-8"))
