@@ -29,8 +29,14 @@ class LSTM:
         g2id_path = os.path.join(model_path, "g2id.json")
         p2id_path = os.path.join(model_path, "p2id.json")
         config_path = os.path.join(model_path, "config.json")
-        self.encoder = ort.InferenceSession(encoder_model_path)
-        self.decoder = ort.InferenceSession(decoder_model_path)
+        self.encoder = ort.InferenceSession(
+            encoder_model_path,
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+        )
+        self.decoder = ort.InferenceSession(
+            decoder_model_path,
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+        )
         self.g2id = json.load(open(g2id_path, encoding="utf-8"))
         self.p2id = json.load(open(p2id_path, encoding="utf-8"))
         self.id2p = {v: k for k, v in self.p2id.items()}
