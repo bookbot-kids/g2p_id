@@ -1,5 +1,5 @@
 """
-Copyright 2022 [PT BOOKBOT INDONESIA](https://bookbot.id/)
+Copyright 2023 [PT BOOKBOT INDONESIA](https://bookbot.id/)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,6 +23,11 @@ model_path = os.path.join(os.path.dirname(__file__), "models", "lstm")
 
 
 class LSTM:
+    """Phoneme-level LSTM model for sequence-to-sequence phonemization.
+    Trained with [Keras](https://keras.io/examples/nlp/lstm_seq2seq/),
+    and exported to ONNX. ONNX Runtime engine used during inference.
+    """
+
     def __init__(self):
         encoder_model_path = os.path.join(model_path, "encoder_model.onnx")
         decoder_model_path = os.path.join(model_path, "decoder_model.onnx")
@@ -37,10 +42,13 @@ class LSTM:
             decoder_model_path,
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
-        self.g2id = json.load(open(g2id_path, encoding="utf-8"))
-        self.p2id = json.load(open(p2id_path, encoding="utf-8"))
+        with open(g2id_path, encoding="utf-8") as f:
+            self.g2id = json.load(f)
+        with open(p2id_path, encoding="utf-8") as f:
+            self.p2id = json.load(f)
         self.id2p = {v: k for k, v in self.p2id.items()}
-        self.config = json.load(open(config_path, encoding="utf-8"))
+        with open(config_path, encoding="utf-8") as f:
+            self.config = json.load(f)
 
     def predict(self, text: str) -> str:
         """Performs LSTM inference, predicting phonemes of a given word.
@@ -62,7 +70,7 @@ class LSTM:
 
         for t, char in enumerate(text):
             input_seq[0, t, self.g2id[char]] = 1.0
-        input_seq[0, t + 1 :, self.g2id[self.config["pad_token"]]] = 1.0
+        input_seq[0, len(text) :, self.g2id[self.config["pad_token"]]] = 1.0
 
         encoder_inputs = {"input_1": input_seq}
         states_value = self.encoder.run(None, encoder_inputs)
