@@ -291,7 +291,7 @@ class TextProcessor:
                 number = re.sub(",", ".", re.sub(r"\.", "", number.strip(" ,.")))
                 if number == "":
                     continue
-                if self.is_integer(number) or self.is_float(number):
+                if self.is_float(number) or self.is_integer(number):
                     try:
                         if self.is_integer(number):
                             number = int(number)
