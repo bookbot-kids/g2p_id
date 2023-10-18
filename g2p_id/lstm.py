@@ -42,13 +42,13 @@ class LSTM:
             decoder_model_path,
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
-        with open(g2id_path, encoding="utf-8") as f:
-            self.g2id = json.load(f)
-        with open(p2id_path, encoding="utf-8") as f:
-            self.p2id = json.load(f)
+        with open(g2id_path, encoding="utf-8") as file:
+            self.g2id = json.load(file)
+        with open(p2id_path, encoding="utf-8") as file:
+            self.p2id = json.load(file)
         self.id2p = {v: k for k, v in self.p2id.items()}
-        with open(config_path, encoding="utf-8") as f:
-            self.config = json.load(f)
+        with open(config_path, encoding="utf-8") as file:
+            self.config = json.load(file)
 
     def predict(self, text: str) -> str:
         """Performs LSTM inference, predicting phonemes of a given word.
@@ -68,8 +68,8 @@ class LSTM:
             dtype="float32",
         )
 
-        for t, char in enumerate(text):
-            input_seq[0, t, self.g2id[char]] = 1.0
+        for idx, char in enumerate(text):
+            input_seq[0, idx, self.g2id[char]] = 1.0
         input_seq[0, len(text) :, self.g2id[self.config["pad_token"]]] = 1.0
 
         encoder_inputs = {"input_1": input_seq}
@@ -88,7 +88,9 @@ class LSTM:
                 "input_3": states_value[0],
                 "input_4": states_value[1],
             }
-            output_tokens, h, c = self.decoder.run(None, decoder_inputs)
+            output_tokens, state_memory, state_carry = self.decoder.run(
+                None, decoder_inputs
+            )
 
             sampled_token_index = np.argmax(output_tokens[0, -1, :])
             sampled_char = self.id2p[sampled_token_index]
@@ -105,6 +107,6 @@ class LSTM:
             )
             target_seq[0, 0, sampled_token_index] = 1.0
 
-            states_value = [h, c]
+            states_value = [state_memory, state_carry]
 
         return decoded_sentence.replace(self.config["eos_token"], "")

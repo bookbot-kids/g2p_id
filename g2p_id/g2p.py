@@ -39,8 +39,8 @@ def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
     """
     homograph_path = os.path.join(resources_path, "homographs_id.tsv")
     homograph2features = {}
-    with open(homograph_path, encoding="utf-8") as f:
-        lines = f.readlines()
+    with open(homograph_path, encoding="utf-8") as file:
+        lines = file.readlines()
         for line in lines:
             grapheme, phone_1, phone_2, pos_1, pos_2 = line.strip("\n").split("\t")
             homograph2features[grapheme.lower()] = (phone_1, phone_2, pos_1, pos_2)
@@ -58,8 +58,8 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
     """
     lexicon_path = os.path.join(resources_path, "lexicon_id.tsv")
     lexicon2features = {}
-    with open(lexicon_path, encoding="utf-8") as f:
-        lines = f.readlines()
+    with open(lexicon_path, encoding="utf-8") as file:
+        lines = file.readlines()
         for line in lines:
             grapheme, phoneme = line.strip("\n").split("\t")
             lexicon2features[grapheme.lower()] = phoneme
@@ -168,11 +168,11 @@ class G2p:
         if text.startswith("ps"):
             text = text[1:]
 
-        for g, p in phonetic_mapping.items():
-            text = text.replace(g, p)
+        for graph, phone in phonetic_mapping.items():
+            text = text.replace(graph, phone)
 
-        for c in consonants:
-            text = text.replace(f"k{c}", f"ʔ{c}")
+        for letter in consonants:
+            text = text.replace(f"k{letter}", f"ʔ{letter}")
 
         phonemes = [
             list(phn) if phn not in ("dʒ", "tʃ") else [phn]

@@ -36,10 +36,10 @@ class BERT:
         self.model = ort.InferenceSession(
             bert_model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
-        with open(config_path, encoding="utf-8") as f:
-            self.config = json.load(f)
-        with open(token2id, encoding="utf-8") as f:
-            self.token2id = json.load(f)
+        with open(config_path, encoding="utf-8") as file:
+            self.config = json.load(file)
+        with open(token2id, encoding="utf-8") as file:
+            self.token2id = json.load(file)
         self.id2token = {v: k for k, v in self.token2id.items()}
 
     def predict(self, text: str) -> str:
