@@ -35,6 +35,11 @@ def test_g2p(g2p):
         ["tʃ", "e", "r", "i"],
         ["."],
     ]
+    assert g2p("keset selamat datang") == [
+        ["k", "e", "s", "e", "t"],
+        ["s", "ə", "l", "a", "m", "a", "t"],
+        ["d", "a", "t", "a", "ŋ"],
+    ]
 
 
 def test_rule_based_g2p(g2p):
@@ -43,6 +48,7 @@ def test_rule_based_g2p(g2p):
     assert g2p._rule_based_g2p("kecolongan") == "k e tʃ o l o ŋ a n"
     assert g2p._rule_based_g2p("jayapura") == "dʒ a j a p u r a"
     assert g2p._rule_based_g2p("xenon") == "s e n o n"
+    assert g2p._rule_based_g2p("layak") == "l a j a ʔ"
 
 
 def test_lstm(lstm):

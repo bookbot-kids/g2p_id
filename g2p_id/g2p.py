@@ -1,5 +1,5 @@
 """
-Copyright 2022 [PT BOOKBOT INDONESIA](https://bookbot.id/)
+Copyright 2023 [PT BOOKBOT INDONESIA](https://bookbot.id/)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
             Value: (PH1, PH2, POS1, POS2)
     """
     homograph_path = os.path.join(resources_path, "homographs_id.tsv")
-    homograph2features = dict()
-    with open(homograph_path, encoding="utf-8") as f:
-        lines = f.readlines()
+    homograph2features = {}
+    with open(homograph_path, encoding="utf-8") as file:
+        lines = file.readlines()
         for line in lines:
             grapheme, phone_1, phone_2, pos_1, pos_2 = line.strip("\n").split("\t")
             homograph2features[grapheme.lower()] = (phone_1, phone_2, pos_1, pos_2)
@@ -57,9 +57,9 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
             Value: Phoneme (IPA)
     """
     lexicon_path = os.path.join(resources_path, "lexicon_id.tsv")
-    lexicon2features = dict()
-    with open(lexicon_path, encoding="utf-8") as f:
-        lines = f.readlines()
+    lexicon2features = {}
+    with open(lexicon_path, encoding="utf-8") as file:
+        lines = file.readlines()
         for line in lines:
             grapheme, phoneme = line.strip("\n").split("\t")
             lexicon2features[grapheme.lower()] = phoneme
@@ -67,6 +67,18 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
 
 
 class G2p:
+    """Grapheme-to-phoneme (g2p) main class for phonemization.
+    This class provides a high-level API for grapheme-to-phoneme conversion.
+
+    1. Preprocess and normalize text
+    2. Word tokenizes text
+    3. Predict POS for every word
+    4. If word is non-alphabetic, add to list (i.e. punctuation)
+    5. If word is a homograph, check POS and use matching word's phonemes
+    6. If word is a non-homograph, lookup lexicon
+    7. Otherwise, predict with a neural network
+    """
+
     def __init__(self, model_type="BERT"):
         """Constructor for G2p.
 
@@ -126,7 +138,7 @@ class G2p:
         Returns:
             str: Phoneme string.
         """
-        _PHONETIC_MAPPING = {
+        phonetic_mapping = {
             "ny": "ɲ",
             "ng": "ŋ",
             "sy": "ʃ",
@@ -145,7 +157,7 @@ class G2p:
             "kh": "x",
         }
 
-        _CONSONANTS = "bdjklmnprstwɲ"
+        consonants = "bdjklmnprstwɲ"
 
         if text.endswith("k"):
             text = text[:-1] + "ʔ"
@@ -156,14 +168,14 @@ class G2p:
         if text.startswith("ps"):
             text = text[1:]
 
-        for g, p in _PHONETIC_MAPPING.items():
-            text = text.replace(g, p)
+        for graph, phone in phonetic_mapping.items():
+            text = text.replace(graph, phone)
 
-        for c in _CONSONANTS:
-            text = text.replace(f"k{c}", f"ʔ{c}")
+        for letter in consonants:
+            text = text.replace(f"k{letter}", f"ʔ{letter}")
 
         phonemes = [
-            list(phn) if phn != "dʒ" and phn != "tʃ" else [phn]
+            list(phn) if phn not in ("dʒ", "tʃ") else [phn]
             for phn in re.split("(tʃ|dʒ)", text)
         ]
         return " ".join([p for phn in phonemes for p in phn])

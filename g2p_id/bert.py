@@ -1,5 +1,5 @@
 """
-Copyright 2022 [PT BOOKBOT INDONESIA](https://bookbot.id/)
+Copyright 2023 [PT BOOKBOT INDONESIA](https://bookbot.id/)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,6 +24,11 @@ model_path = os.path.join(os.path.dirname(__file__), "models", "bert")
 
 
 class BERT:
+    """Phoneme-level BERT model for predicting the correct phoneme for the letter `e`.
+    Trained with [Keras](https://keras.io/examples/nlp/masked_language_modeling/),
+    and exported to ONNX. ONNX Runtime engine used during inference.
+    """
+
     def __init__(self):
         bert_model_path = os.path.join(model_path, "bert_mlm.onnx")
         token2id = os.path.join(model_path, "token2id.json")
@@ -31,9 +36,11 @@ class BERT:
         self.model = ort.InferenceSession(
             bert_model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
-        self.token2id = json.load(open(token2id, encoding="utf-8"))
+        with open(config_path, encoding="utf-8") as file:
+            self.config = json.load(file)
+        with open(token2id, encoding="utf-8") as file:
+            self.token2id = json.load(file)
         self.id2token = {v: k for k, v in self.token2id.items()}
-        self.config = json.load(open(config_path, encoding="utf-8"))
 
     def predict(self, text: str) -> str:
         """Performs BERT inference, predicting the correct phoneme for the letter `e`.

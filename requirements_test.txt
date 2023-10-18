@@ -4,3 +4,4 @@ tox
 pytest
 pytest-cov
 mypy
+pylint
