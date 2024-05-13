@@ -198,6 +198,8 @@ class G2p:
             List[List[str]]: List of strings in phonemes.
         """
         text = self._preprocess(text)
+        # replace dot with space 
+        text = re.sub(r'\.(?=.*\.)', ' ', text)
         words = self.tokenizer.tokenize(text)
         tokens = self.tagger.tag(words)
 
@@ -220,8 +222,6 @@ class G2p:
                 pron = self.lexicon2features[word]
 
             else:  # predict for OOV
-                # replace dot with space 
-                word = re.sub(r'\.(?=.*\.)', ' ', word)
                 pron = self.model.predict(word)
                 if isinstance(self.model, BERT):
                     pron = self._rule_based_g2p(pron)

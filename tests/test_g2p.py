@@ -1,3 +1,5 @@
+from g2p_id import G2p
+
 def test_g2p(g2p):
     assert g2p("Apel itu berwarna merah.") == [
         ["a", "p", "ə", "l"],
@@ -71,7 +73,7 @@ def test_ps(g2p):
     assert g2p("psikotes") == [["s", "i", "k", "o", "t", "e", "s"]]
 
 def test_ys(g2p):
-    assert g2p("Seniornya Brigadir Jendral  A.Yani mengambil alih pimpinan.") == [
+    assert g2p("Seniornya Brigadir Jendral A.Yani mengambil alih pimpinan.") == [
         ['s', 'ə', 'n', 'i', 'o', 'r', 'ɲ', 'a'], 
         ['b', 'r', 'i', 'ɡ', 'a', 'd', 'i', 'r'], 
         ['dʒ', 'ə', 'n', 'd', 'r', 'a', 'l'], 
