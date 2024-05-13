@@ -69,3 +69,16 @@ def test_ps(g2p):
     assert g2p("psikologi") == [["s", "i", "k", "o", "l", "o", "ɡ", "i"]]
     assert g2p("psikometri") == [["s", "i", "k", "o", "m", "e", "t", "r", "i"]]
     assert g2p("psikotes") == [["s", "i", "k", "o", "t", "e", "s"]]
+
+def test_ys(g2p):
+    assert g2p("Seniornya Brigadir Jendral  A.Yani mengambil alih pimpinan.") == [
+        ['s', 'ə', 'n', 'i', 'o', 'r', 'ɲ', 'a'], 
+        ['b', 'r', 'i', 'ɡ', 'a', 'd', 'i', 'r'], 
+        ['dʒ', 'ə', 'n', 'd', 'r', 'a', 'l'], 
+        ['a'], 
+        ['j', 'a', 'n', 'i'], 
+        ['m', 'ə', 'ŋ', 'a', 'm', 'b', 'i', 'l'], 
+        ['a', 'l', 'i', 'h'], 
+        ['p', 'i', 'm', 'p', 'i', 'n', 'a', 'n'], 
+        ['.']
+    ]
