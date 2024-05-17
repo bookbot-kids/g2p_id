@@ -198,8 +198,8 @@ class G2p:
             List[List[str]]: List of strings in phonemes.
         """
         text = self._preprocess(text)
-        # replace dot with space 
-        text = re.sub(r'\.(?=.*\.)', ' ', text)
+        # replace dot with space
+        text = re.sub(r"\.(?=.*\.)", " ", text)
         words = self.tokenizer.tokenize(text)
         tokens = self.tagger.tag(words)
 
