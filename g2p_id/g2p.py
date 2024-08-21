@@ -117,6 +117,7 @@ class G2p:
             str: Preprocessed text.
         """
         text = text.replace("-", " ")
+        text = re.sub(r"\.(?=.*\.)", " ", text)
         text = " ".join(self.tokenizer.tokenize(text))
         text = unicode(text)
         text = "".join(
