@@ -13,7 +13,8 @@ with open(requirements_path, "r", encoding="utf-8") as requirements_file:
 
 if __name__ == "__main__":
     setup(
-        name="g2p_id",
+        name="g2p_id_py",
+        version="0.3.5",
         description="Indonesian G2P.",
         long_description=long_description,
         long_description_content_type="text/markdown",
