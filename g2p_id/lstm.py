@@ -17,7 +17,7 @@ limitations under the License.
 import os
 import json
 import numpy as np
-import onnxruntime as ort
+from g2p_id.onnx_utils import WrapInferenceSession
 
 model_path = os.path.join(os.path.dirname(__file__), "models", "lstm")
 
@@ -34,11 +34,11 @@ class LSTM:
         g2id_path = os.path.join(model_path, "g2id.json")
         p2id_path = os.path.join(model_path, "p2id.json")
         config_path = os.path.join(model_path, "config.json")
-        self.encoder = ort.InferenceSession(
+        self.encoder = WrapInferenceSession(
             encoder_model_path,
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
-        self.decoder = ort.InferenceSession(
+        self.decoder = WrapInferenceSession(
             decoder_model_path,
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
@@ -75,9 +75,7 @@ class LSTM:
         encoder_inputs = {"input_1": input_seq}
         states_value = self.encoder.run(None, encoder_inputs)
 
-        target_seq = np.zeros(
-            (1, 1, self.config["num_decoder_tokens"]), dtype="float32"
-        )
+        target_seq = np.zeros((1, 1, self.config["num_decoder_tokens"]), dtype="float32")
         target_seq[0, 0, self.p2id[self.config["bos_token"]]] = 1.0
 
         stop_condition = False
@@ -88,9 +86,7 @@ class LSTM:
                 "input_3": states_value[0],
                 "input_4": states_value[1],
             }
-            output_tokens, state_memory, state_carry = self.decoder.run(
-                None, decoder_inputs
-            )
+            output_tokens, state_memory, state_carry = self.decoder.run(None, decoder_inputs)
 
             sampled_token_index = np.argmax(output_tokens[0, -1, :])
             sampled_char = self.id2p[sampled_token_index]
@@ -102,9 +98,7 @@ class LSTM:
             ):
                 stop_condition = True
 
-            target_seq = np.zeros(
-                (1, 1, self.config["num_decoder_tokens"]), dtype="float32"
-            )
+            target_seq = np.zeros((1, 1, self.config["num_decoder_tokens"]), dtype="float32")
             target_seq[0, 0, sampled_token_index] = 1.0
 
             states_value = [state_memory, state_carry]

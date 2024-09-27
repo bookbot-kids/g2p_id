@@ -17,7 +17,8 @@ limitations under the License.
 from .g2p import G2p
 from .lstm import LSTM
 from .bert import BERT
+from .onnx_utils import WrapInferenceSession
 from .text_processor import TextProcessor
 
-__version__ = "0.3.5"
-__all__ = ["G2p", "LSTM", "BERT", "TextProcessor"]
+__version__ = "0.3.6"
+__all__ = ["G2p", "LSTM", "BERT", "WrapInferenceSession", "TextProcessor"]
