@@ -40,5 +40,5 @@ class WrapInferenceSession:
 
     def __setstate__(self, values):
         self.onnx_bytes = values["onnx_bytes"]
-        self.providers = values["providers"]
+        self.providers = values.get("providers", None)
         self.sess = ort.InferenceSession(self.onnx_bytes, self.providers)
