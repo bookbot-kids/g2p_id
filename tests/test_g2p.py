@@ -30,7 +30,7 @@ def test_g2p(g2p):
     assert g2p("Ini rumahnya Aisyah dan Ceri.") == [
         ["i", "n", "i"],
         ["r", "u", "m", "a", "h", "ɲ", "a"],
-        ["a", "i", "ʃ", "a", "h"],
+        ["a", "ʔ", "i", "ʃ", "a", "h"],
         ["d", "a", "n"],
         ["tʃ", "e", "r", "i"],
         ["."],
@@ -48,7 +48,7 @@ def test_rule_based_g2p(g2p):
     assert g2p._rule_based_g2p("kecolongan") == "k e tʃ o l o ŋ a n"
     assert g2p._rule_based_g2p("jayapura") == "dʒ a j a p u r a"
     assert g2p._rule_based_g2p("xenon") == "s e n o n"
-    assert g2p._rule_based_g2p("layak") == "l a j a ʔ"
+    assert g2p._rule_based_g2p("layak") == "l a j a k"
 
 
 def test_lstm(lstm):
@@ -63,6 +63,7 @@ def test_bert(bert):
     assert bert.predict("merdeka") == "mərdeka"
     assert bert.predict("pecel") == "pəcel"
     assert bert.predict("lele") == "lele"
+    assert bert.predict("banyak") == "banyak"
 
 
 def test_ps(g2p):
@@ -73,7 +74,7 @@ def test_ps(g2p):
 
 def test_sticking_dot(g2p):
     assert g2p("Seniornya Brigadir Jendral A.Yani mengambil alih pimpinan.") == [
-        ["s", "ə", "n", "i", "o", "r", "ɲ", "a"],
+        ["s", "ə", "n", "i", "ʔ", "o", "r", "ɲ", "a"],
         ["b", "r", "i", "ɡ", "a", "d", "i", "r"],
         ["dʒ", "ə", "n", "d", "r", "a", "l"],
         ["a"],
@@ -83,3 +84,10 @@ def test_sticking_dot(g2p):
         ["p", "i", "m", "p", "i", "n", "a", "n"],
         ["."],
     ]
+
+
+def test_onnx_wrapper(bert):
+    assert bert.predict("mengembangkannya") == "məngəmbangkannya"
+    model_state = bert.model.__getstate__()
+    bert.model.__setstate__(model_state)
+    assert bert.predict("mengembangkannya") == "məngəmbangkannya"

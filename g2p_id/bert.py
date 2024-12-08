@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import os
 import json
+import os
+
 import numpy as np
+import onnxruntime
+
 from g2p_id.onnx_utils import WrapInferenceSession
 
 model_path = os.path.join(os.path.dirname(__file__), "models", "bert")
@@ -32,7 +35,7 @@ class BERT:
         bert_model_path = os.path.join(model_path, "bert_mlm.onnx")
         token2id = os.path.join(model_path, "token2id.json")
         config_path = os.path.join(model_path, "config.json")
-        self.model = WrapInferenceSession(bert_model_path, providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+        self.model = WrapInferenceSession(bert_model_path, providers=onnxruntime.get_available_providers())
         with open(config_path, encoding="utf-8") as file:
             self.config = json.load(file)
         with open(token2id, encoding="utf-8") as file:

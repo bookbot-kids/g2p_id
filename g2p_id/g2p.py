@@ -16,15 +16,17 @@ limitations under the License.
 
 import os
 import re
-from typing import Dict, List, Tuple, Union
 import unicodedata
 from builtins import str as unicode
+from itertools import permutations
+from typing import Dict, List, Tuple, Union
+
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import TweetTokenizer
 
-from g2p_id.text_processor import TextProcessor
-from g2p_id.lstm import LSTM
 from g2p_id.bert import BERT
+from g2p_id.lstm import LSTM
+from g2p_id.text_processor import TextProcessor
 
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -158,10 +160,11 @@ class G2p:
             "kh": "x",
         }
 
-        consonants = "bdjklmnprstwɲ"
+        vowels = "aeiouə"
 
-        if text.endswith("k"):
-            text = text[:-1] + "ʔ"
+        # add a glottal stop in between consecutive vowels
+        for (v1, v2) in permutations(vowels, 2):
+            text = text.replace(f"{v1}{v2}", f"{v1}ʔ{v2}")
 
         if text.startswith("x"):
             text = "s" + text[1:]
@@ -171,9 +174,6 @@ class G2p:
 
         for graph, phone in phonetic_mapping.items():
             text = text.replace(graph, phone)
-
-        for letter in consonants:
-            text = text.replace(f"k{letter}", f"ʔ{letter}")
 
         phonemes = [
             list(phn) if phn not in ("dʒ", "tʃ") else [phn]
@@ -226,5 +226,13 @@ class G2p:
                     pron = self._rule_based_g2p(pron)
 
             prons.append(pron.split())
+
+        if pron.endswith("ʔ"):
+            pron = pron[:-1] + "k"
+
+        consonants = "bdjklmnprstwɲ"
+
+        for letter in consonants:
+            text = text.replace(f"ʔ{letter}", f"k{letter}")
 
         return prons

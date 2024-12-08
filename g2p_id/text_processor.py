@@ -23,9 +23,10 @@ SOFTWARE.
 """
 
 
-import re
 import os
+import re
 from typing import Any
+
 from num2words import num2words
 
 resources_path = os.path.join(os.path.dirname(__file__), "resources")

@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from .bert import BERT
 from .g2p import G2p
 from .lstm import LSTM
-from .bert import BERT
 from .onnx_utils import WrapInferenceSession
 from .text_processor import TextProcessor
 

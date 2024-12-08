@@ -1,5 +1,6 @@
 import pytest
-from g2p_id import G2p, LSTM, BERT, TextProcessor
+
+from g2p_id import BERT, LSTM, G2p, TextProcessor
 
 
 @pytest.fixture(scope="session")

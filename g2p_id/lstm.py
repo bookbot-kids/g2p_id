@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import os
 import json
+import os
+
 import numpy as np
+import onnxruntime
+
 from g2p_id.onnx_utils import WrapInferenceSession
 
 model_path = os.path.join(os.path.dirname(__file__), "models", "lstm")
@@ -36,11 +39,11 @@ class LSTM:
         config_path = os.path.join(model_path, "config.json")
         self.encoder = WrapInferenceSession(
             encoder_model_path,
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            providers=onnxruntime.get_available_providers(),
         )
         self.decoder = WrapInferenceSession(
             decoder_model_path,
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            providers=onnxruntime.get_available_providers(),
         )
         with open(g2id_path, encoding="utf-8") as file:
             self.g2id = json.load(file)
