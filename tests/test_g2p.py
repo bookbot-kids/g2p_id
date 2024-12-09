@@ -21,7 +21,7 @@ def test_g2p(g2p):
     assert g2p("Mereka sedang bermain bola di lapangan.") == [
         ["m", "ə", "r", "e", "k", "a"],
         ["s", "ə", "d", "a", "ŋ"],
-        ["b", "ə", "r", "m", "a", "i", "n"],
+        ["b", "ə", "r", "m", "a", "ʔ", "i", "n"],
         ["b", "o", "l", "a"],
         ["d", "i"],
         ["l", "a", "p", "a", "ŋ", "a", "n"],

@@ -160,12 +160,6 @@ class G2p:
             "kh": "x",
         }
 
-        vowels = "aeiouə"
-
-        # add a glottal stop in between consecutive vowels
-        for v1, v2 in permutations(vowels, 2):
-            text = text.replace(f"{v1}{v2}", f"{v1}ʔ{v2}")
-
         if text.startswith("x"):
             text = "s" + text[1:]
 
@@ -226,9 +220,14 @@ class G2p:
                 pron = pron[:-1] + "k"
 
             consonants = "bdjklmnprstwɲ"
+            vowels = "aeiouə"
 
             for letter in consonants:
-                text = text.replace(f"ʔ{letter}", f"k{letter}")
+                pron = pron.replace(f"ʔ {letter}", f"k {letter}")
+
+            # add a glottal stop in between consecutive vowels
+            for v1, v2 in permutations(vowels, 2):
+                pron = pron.replace(f"{v1} {v2}", f"{v1} ʔ {v2}")
 
             prons.append(pron.split())
 
