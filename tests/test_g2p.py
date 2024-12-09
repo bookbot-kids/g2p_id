@@ -40,6 +40,7 @@ def test_g2p(g2p):
         ["s", "ə", "l", "a", "m", "a", "t"],
         ["d", "a", "t", "a", "ŋ"],
     ]
+    assert g2p("kakak layak") == [["k", "a", "k", "a", "k"], ["l", "a", "j", "a", "k"]]
 
 
 def test_rule_based_g2p(g2p):

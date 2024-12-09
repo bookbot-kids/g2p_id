@@ -222,14 +222,14 @@ class G2p:
                 if isinstance(self.model, BERT):
                     pron = self._rule_based_g2p(pron)
 
+            if pron.endswith("ʔ"):
+                pron = pron[:-1] + "k"
+
+            consonants = "bdjklmnprstwɲ"
+
+            for letter in consonants:
+                text = text.replace(f"ʔ{letter}", f"k{letter}")
+
             prons.append(pron.split())
-
-        if pron.endswith("ʔ"):
-            pron = pron[:-1] + "k"
-
-        consonants = "bdjklmnprstwɲ"
-
-        for letter in consonants:
-            text = text.replace(f"ʔ{letter}", f"k{letter}")
 
         return prons
