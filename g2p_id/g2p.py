@@ -22,6 +22,7 @@ from builtins import str as unicode
 from itertools import permutations
 from typing import Dict, List, Tuple, Union
 
+import nltk
 from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import TweetTokenizer
 
@@ -29,6 +30,7 @@ from g2p_id.bert import BERT
 from g2p_id.lstm import LSTM
 from g2p_id.text_processor import TextProcessor
 
+nltk.download("wordnet")
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
 
@@ -124,11 +126,7 @@ class G2p:
         text = re.sub(r"\.(?=.*\.)", " ", text)
         text = " ".join(self.tokenizer.tokenize(text))
         text = unicode(text)
-        text = "".join(
-            char
-            for char in unicodedata.normalize("NFD", text)
-            if unicodedata.category(char) != "Mn"
-        )
+        text = "".join(char for char in unicodedata.normalize("NFD", text) if unicodedata.category(char) != "Mn")
         text = self.normalizer.normalize(text).strip()
         text = text.lower()
         text = re.sub(r"[^ a-z'.,?!\-]", "", text)
@@ -165,7 +163,7 @@ class G2p:
         vowels = "aeiouə"
 
         # add a glottal stop in between consecutive vowels
-        for (v1, v2) in permutations(vowels, 2):
+        for v1, v2 in permutations(vowels, 2):
             text = text.replace(f"{v1}{v2}", f"{v1}ʔ{v2}")
 
         if text.startswith("x"):
@@ -177,10 +175,7 @@ class G2p:
         for graph, phone in phonetic_mapping.items():
             text = text.replace(graph, phone)
 
-        phonemes = [
-            list(phn) if phn not in ("dʒ", "tʃ") else [phn]
-            for phn in re.split("(tʃ|dʒ)", text)
-        ]
+        phonemes = [list(phn) if phn not in ("dʒ", "tʃ") else [phn] for phn in re.split("(tʃ|dʒ)", text)]
         return " ".join([p for phn in phonemes for p in phn])
 
     def __call__(self, text: str) -> List[List[str]]:
