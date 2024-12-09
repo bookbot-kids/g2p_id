@@ -20,5 +20,5 @@ from .lstm import LSTM
 from .onnx_utils import WrapInferenceSession
 from .text_processor import TextProcessor
 
-__version__ = "0.3.7"
+__version__ = "0.4.0"
 __all__ = ["G2p", "LSTM", "BERT", "WrapInferenceSession", "TextProcessor"]

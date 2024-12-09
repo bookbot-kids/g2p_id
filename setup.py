@@ -14,7 +14,7 @@ with open(requirements_path, "r", encoding="utf-8") as requirements_file:
 if __name__ == "__main__":
     setup(
         name="g2p_id_py",
-        version="0.3.7",
+        version="0.4.0",
         description="Indonesian G2P.",
         long_description=long_description,
         long_description_content_type="text/markdown",
@@ -26,5 +26,5 @@ if __name__ == "__main__":
         install_requires=requirements,
         include_package_data=True,
         platforms=["linux", "unix", "windows"],
-        python_requires=">=3.7",
+        python_requires=">=3.8",
     )
