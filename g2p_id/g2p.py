@@ -16,6 +16,7 @@ limitations under the License.
 
 import os
 import re
+import pickle
 import unicodedata
 from builtins import str as unicode
 from itertools import permutations
@@ -94,7 +95,8 @@ class G2p:
         self.normalizer = TextProcessor()
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
-        self.tagger.load("file://" + tagger_path)
+        with open(tagger_path, "rb") as f:
+            self.tagger = self.tagger.decode_json_obj(pickle.load(f))
         self.model: Union[BERT, LSTM] = BERT() if model_type == "BERT" else LSTM()
         self.tokenizer = TweetTokenizer()
         self.pos_dict = {
