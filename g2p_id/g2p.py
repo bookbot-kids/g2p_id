@@ -21,6 +21,8 @@ import unicodedata
 from builtins import str as unicode
 from itertools import permutations
 from typing import Dict, List, Tuple, Union
+import asyncio
+import libsql_client
 
 import nltk
 from nltk.tag.perceptron import PerceptronTagger
@@ -29,19 +31,40 @@ from nltk.tokenize import TweetTokenizer
 from g2p_id.bert import BERT
 from g2p_id.lstm import LSTM
 from g2p_id.text_processor import TextProcessor
+from g2p_id.turso_db import _fetch_lexicon_from_turso, _fetch_homographs_from_turso
+
+import logging
+
+# Configure logging at the top of the file after imports
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+_LOGGER = logging.getLogger(__name__)
+
 
 nltk.download("wordnet")
 resources_path = os.path.join(os.path.dirname(__file__), "resources")
 
 
-def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
-    """Creates a dictionary of homographs
+def construct_homographs_dictionary(turso_config=None) -> Dict[str, Tuple[str, str, str, str]]:
+    """Creates a dictionary of homographs.
+    If turso_config is provided, fetches from Turso database.
+    Otherwise, loads from local TSV file.
+
+    Args:
+        turso_config: Optional dictionary containing Turso configuration
 
     Returns:
         Dict[str, Tuple[str, str, str, str]]:
             Key: WORD
             Value: (PH1, PH2, POS1, POS2)
     """
+    if turso_config:
+        _LOGGER.info("Loading homographs from Turso database...")
+        return asyncio.run(_fetch_homographs_from_turso(turso_config))
+    
+    _LOGGER.info("Loading homographs from local TSV file...")
     homograph_path = os.path.join(resources_path, "homographs_id.tsv")
     homograph2features = {}
     with open(homograph_path, encoding="utf-8") as file:
@@ -53,14 +76,27 @@ def construct_homographs_dictionary() -> Dict[str, Tuple[str, str, str, str]]:
     return homograph2features
 
 
-def construct_lexicon_dictionary() -> Dict[str, str]:
+def construct_lexicon_dictionary(turso_config=None) -> Dict[str, str]:
     """Creates a lexicon dictionary.
+    If turso_config is provided, fetches from Turso database.
+    Otherwise, loads from local TSV file.
+
+    Args:
+        turso_config: Optional dictionary containing Turso configuration
+            - url: Turso database URL
+            - auth_token: Authentication token
+            - table: Table name
 
     Returns:
         Dict[str, str]:
             Key: WORD
             Value: Phoneme (IPA)
     """
+    if turso_config:
+        _LOGGER.info("Loading lexicon from Turso database...")
+        return asyncio.run(_fetch_lexicon_from_turso(turso_config))
+    
+    _LOGGER.info("Loading lexicon from local TSV file...")
     lexicon_path = os.path.join(resources_path, "lexicon_id.tsv")
     lexicon2features = {}
     with open(lexicon_path, encoding="utf-8") as file:
@@ -69,6 +105,10 @@ def construct_lexicon_dictionary() -> Dict[str, str]:
             grapheme, phoneme = line.strip("\n").split("\t")
             lexicon2features[grapheme.lower()] = phoneme
     return lexicon2features
+
+
+def construct_online_lexicon(turso_config):
+    return 
 
 
 class G2p:
@@ -84,7 +124,7 @@ class G2p:
     7. Otherwise, predict with a neural network
     """
 
-    def __init__(self, model_type="BERT"):
+    def __init__(self, model_type="BERT", turso_config=None):
         """Constructor for G2p.
 
         Args:
@@ -92,8 +132,9 @@ class G2p:
                 Type of neural network to use for prediction.
                 Choices are "LSTM" or "BERT". Defaults to "BERT".
         """
-        self.homograph2features = construct_homographs_dictionary()
-        self.lexicon2features = construct_lexicon_dictionary()
+        self.homograph2features = construct_homographs_dictionary(turso_config)
+        self.lexicon2features = construct_lexicon_dictionary(turso_config)
+        
         self.normalizer = TextProcessor()
         self.tagger = PerceptronTagger(load=False)
         tagger_path = os.path.join(resources_path, "id_posp_tagger.pickle")
